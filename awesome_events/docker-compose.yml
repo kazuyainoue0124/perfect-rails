@@ -1,0 +1,23 @@
+version: "3"
+services:
+  rails:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/awesome_events
+    ports:
+      - "3000:3000"
+    environment:
+      - RAILS_ENV=development
+  webpack:
+    build: .
+    command: bash -c "bundle exec bin/webpack-dev-server"
+    volumes:
+      - .:/awesome_events
+    ports:
+      - "3036:3035"
+    environment:
+      - NODE_ENV=development
+      - RAILS_ENV=development
+    depends_on:
+      - rails
